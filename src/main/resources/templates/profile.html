@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Login Page</title>
+</head>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script>
+        function confirmDelete(event) {
+            if (!confirm('Are you sure you want to delete this user?')) {
+                event.preventDefault();
+            }
+        }
+        
+        function confirmLogout(event) {
+            if (!confirm('Are you sure you want to Logout?')) {
+                event.preventDefault();
+            }
+        }
+        
+        
+    </script>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-6 mx-auto rounded border p-4">
+                <h2 class="text-center mb-4">Profile Page</h2>
+                User Name: [[${currentUser.fname}]]  [[${currentUser.lname}]]
+                <div class=text-right><a href="#" th:href="@{/logout}" class=text-right onclick="confirmLogout(event)">Logout</a></div>
+                <th:block th:if="${session.msg}">
+			<p class=text-center>[[${session.msg}]]</p>
+			<th:block th:text="${@userService.removeSessionMessage()}"> </th:block>
+			</th:block>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr> <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile No</th>
+                            <th>User name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user, c:${alluser}"> 
+                        	<td th:text="${user.id}"></td>
+                            <td th:text="${user.fname}"></td>
+                            <td th:text="${user.lname}"></td>
+                            <td th:text="${user.mobile}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td><a th:href="@{/editUser/{userId}(userId=${user.id})}">Edit</a></td>
+                            <td><a th:href="@{/deleteUser/{userId}(userId=${user.id})}" onclick="confirmDelete(event)">Delete</a></td>
+                        </tr>
+                        
+                    </tbody>
+                   
+                </table>
+            </div> 
+        </div>
+        
+    </div>
+    
+   
+</body>
+
+</html>
